@@ -7,6 +7,5 @@
 - Grace Claudia Silitonga	(241401128)
 
 📋Deskripsi Program
-Game dadu sederhana di mana pemain melempar dadu sebanyak 3 putaran. Pemenang ditentukan berdasarkan siapa yang paling mendekati skor target. Jika ada hasil seri, maka dilakukan tie breaker.
-
+Ini merupakan game dadu sederhana, yang memungkinkan 2 hingga 5 pemain untuk bermain secara bergiliran selama 3 putaran lemparan dadu. Tujuan dari game ini adalah untuk memperoleh skor total yang paling mendekati skor target yang telah ditentukan di awal permainan. Setelah 3 putaran, sistem akan menghitung selisih antara skor total pemain dan skor target. Pemain dengan selisih terkecil akan dinyatakan sebagai pemenang. Jika terdapat dua pemain teratas yang memiliki skor total dan selisih skor yang sama, maka sistem akan secara otomatis menjalankan fitur tie breaker, yaitu lemparan dadu tambahan untuk menentukan pemenangnya.
 
