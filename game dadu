@@ -1,0 +1,129 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+struct Pemain {
+    string nama;
+    int skorTotal = 0;
+    int skorTieBreak = 0;
+    int selisihSkor = 0;
+};
+// === FADLI: Fungsi untuk membandingkan pemain berdasarkan selisih dan skor tie break ===
+bool bandingkanPemain(Pemain a, Pemain b) {
+    if (a.selisihSkor == b.selisihSkor) {
+        return a.skorTieBreak > b.skorTieBreak;
+    }
+    return a.selisihSkor < b.selisihSkor;
+}
+
+int main() {
+    srand(time(0));
+    char ulang;
+
+    do {
+        vector<Pemain> pemain;
+        int jumlahPemain, skorTarget;
+// === JONATHAN: Tampilan awal, input jumlah pemain & skor target ===
+        cout << "============================================\n";
+        cout << "Selamat Datang di Game Dadu Kelompok 6A6!!!\n";
+        cout << "============================================\n";
+        cout << "NOTE: Pemain maksimal berjumlah 5 orang\n\n";
+
+        do {
+            cout << "Masukkan jumlah pemain: ";
+            cin >> jumlahPemain;
+        } while (jumlahPemain < 1 || jumlahPemain > 5);
+
+        do {
+            cout << "Masukkan skor target: ";
+            cin >> skorTarget;
+        } while (skorTarget < 1 || skorTarget > 18);
+
+        cin.ignore();
+        for (int i = 0; i < jumlahPemain; i++) {
+            Pemain p;
+            cout << "Nama pemain ke-" << i + 1 << " : ";
+            getline(cin, p.nama);
+            pemain.push_back(p);
+        }
+ // === GRACE: Proses putaran lempar dadu dan penjumlahan skor total ===
+        for (int putaran = 0; putaran < 3; putaran++) {
+            cout << "\nPutaran ke-" << putaran + 1 << endl;
+            for (int i = 0; i < jumlahPemain; i++) {
+                int dadu = rand() % 6 + 1;
+                pemain[i].skorTotal += dadu;
+                cout << "Pemain ke-" << i + 1 << " atau " << pemain[i].nama << endl;
+                cout << "Dadu anda bernilai " << dadu << endl;
+                cout << "Skor anda saat ini: " << pemain[i].skorTotal << endl << endl;
+            }
+        }
+ // === FADLI: Hitung selisih dan urutkan pemain ===
+        for (int i = 0; i < jumlahPemain; i++) {
+            pemain[i].selisihSkor = abs(skorTarget - pemain[i].skorTotal);
+        }
+
+        sort(pemain.begin(), pemain.end(), bandingkanPemain);
+ // === BRILIAN: Output hasil ranking awal ===
+        cout << "\nSkor Target : " << skorTarget << endl;
+        cout << "============================================\n";
+        cout << "Ranking | Nama     | Skor | Selisih Skor\n";
+        cout << "============================================\n";
+        for (int i = 0; i < jumlahPemain; i++) {
+            cout << i + 1 << "       | " << pemain[i].nama << "     | "
+                 << pemain[i].skorTotal << "    | " << pemain[i].selisihSkor << endl;
+        }
+// === BRILIAN: Tie Breaker jika skor sama ===
+        // Cek tie break
+        if (jumlahPemain >= 2 &&
+            pemain[0].selisihSkor == pemain[1].selisihSkor &&
+            pemain[0].skorTotal == pemain[1].skorTotal) {
+
+            cout << "\n============================================\n";
+            cout << "Selamat datang di game tie breaker\n";
+            cout << "============================================\n";
+            cout << "Peserta tie breaker:\n";
+            cout << "1. " << pemain[0].nama << endl;
+            cout << "2. " << pemain[1].nama << endl;
+            cout << "Klik tombol enter untuk lanjut bermain...\n";
+            cin.ignore();
+
+            int hasil1 = rand() % 6 + 1;
+            int hasil2 = rand() % 6 + 1;
+
+            cout << "Pemain ke-1 atau " << pemain[0].nama << endl;
+            cout << "Dadu anda bernilai " << hasil1 << endl;
+
+            cout << "Pemain ke-2 atau " << pemain[1].nama << endl;
+            cout << "Dadu anda bernilai " << hasil2 << endl;
+
+            pemain[0].skorTieBreak = hasil1;
+            pemain[1].skorTieBreak = hasil2;
+
+            sort(pemain.begin(), pemain.end(), bandingkanPemain);
+
+            cout << "\nSkor Target : " << skorTarget << endl;
+            cout << "============================================\n";
+            cout << "Ranking | Nama     | Skor | Selisih Skor | Skor Tie Break\n";
+            cout << "============================================\n";
+            for (int i = 0; i < jumlahPemain; i++) {
+                cout << i + 1 << "       | " << pemain[i].nama << "     | "
+                     << pemain[i].skorTotal << "    | " << pemain[i].selisihSkor
+                     << "           | " << pemain[i].skorTieBreak << endl;
+            }
+        }
+// === GRACE: Pilihan untuk bermain ulang ===
+        cout << "\nApakah ingin lanjut bermain (Y/T): ";
+        cin >> ulang;
+        cin.ignore();
+        cout << endl;
+
+    } while (ulang == 'Y' || ulang == 'y');
+
+    cout << "TERIMA KASIH SUDAH MENCOBA GAME KAMI!!!\n";
+    return 0;
+}
